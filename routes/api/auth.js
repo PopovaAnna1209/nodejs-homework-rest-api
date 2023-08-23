@@ -15,4 +15,8 @@ authRouter.post("/login", validateBody(userSchemas.login), authCtrl.signin);
 
 authRouter.post("/logout", authenticate, authCtrl.signout);
 
+authRouter.get("/verify/:verificationToken", authCtrl.verifyEmail);
+
+authRouter.post("/verify", validateBody(userSchemas.verification), authCtrl.resendEmail);
+
 module.exports = authRouter;

@@ -8,15 +8,15 @@ const { SECRET_KEY } = process.env;
 const signin = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
+  
+  const passwordCompare = await bcrypt.compare(password, user.password);
 
-  if (!user) {
+  if (!user || !passwordCompare) {
     throw new Unauthorized("Email or password is invalid");
   }
 
-  const passwordCompare = await bcrypt.compare(password, user.password);
-
-  if (!passwordCompare) {
-    throw new Unauthorized("Email or password is invalid");
+  if (!user.verify) {
+    throw new Unauthorized("Email is not verified");
   }
 
   const payload = { id: user._id };
@@ -33,6 +33,8 @@ const signin = async (req, res) => {
       userData: {
         email: user.email,
         subscription: user.subscription,
+        avatarURL: user.avatarURL,
+        verify: user.verify,
       },
     },
   });

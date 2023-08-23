@@ -1,5 +1,5 @@
 const getCurrentUser = async (req, res) => {
-    const { email, subscription } = req.user;
+    const { email, subscription, avatarURL, verify } = req.user;
   
     res.json({
       code: 200,
@@ -7,6 +7,8 @@ const getCurrentUser = async (req, res) => {
       userData: {
         email,
         subscription,
+        avatarURL,
+        verify,
       },
     });
   };
